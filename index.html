@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Little Art Club</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: #332925;
+      font-family: "DM Sans", sans-serif;
+      background: #203D43 url("images/water-background.jpg")
+        center / cover fixed;
+    }
+    nav {
+      padding: 25px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      color: white;
+      background: rgba(20, 35, 38, 0.55);
+    }
+    .logo {
+      font-family: "Playfair Display", serif;
+      font-size: 25px;
+    }
+    nav a { color: white; text-decoration: none; }
+    .welcome {
+      margin: 65px 6%;
+      padding: 45px;
+      max-width: 600px;
+      background: #F1E9DA;
+      box-shadow: 8px 8px 0 rgba(0,0,0,.12);
+    }
+    h1, h2, h3 {
+      font-family: "Playfair Display", serif;
+      font-weight: 400;
+    }
+    h1 { font-size: clamp(42px, 7vw, 75px); margin: 10px 0; }
+    .posts {
+      background: rgba(241,233,218,.95);
+      padding: 40px 6% 65px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+      gap: 22px;
+    }
+    article {
+      background: #fffaf1;
+      padding: 12px 12px 25px;
+      box-shadow: 3px 5px 12px #33292525;
+    }
+    article img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+    .tag { font-size: 12px; letter-spacing: 2px; }
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #825956;
+      color: white;
+      text-decoration: none;
+    }
+    @media(max-width:600px) {
+      nav { flex-wrap: wrap; }
+      .welcome { margin: 35px 5%; padding: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="logo">the little art club</div>
+    <a href="#posts">Recent Posts</a>
+  </nav>
+
+  <section class="welcome">
+    <p class="tag">A FRIENDS' CREATIVE SPACE</p>
+    <h1>ART CLUB</h1>
+    <p>create · share · inspire · repeat</p>
+    <p>A little corner of the internet for
+    the things we make, the letters we write,
+    and the creative life we're building together.</p>
+    <a class="button" href="#posts">Explore the scrapbook</a>
+  </section>
+
+  <section class="posts" id="posts">
+    <h2>Recent Posts</h2>
+    <div class="cards">
+      <article>
+        <img src="images/water-background.jpg" alt="Water over rocks">
+        <p class="tag">ARTWORK</p>
+        <h3>Rock Pool Study</h3>
+        <p>A little inspiration from the water.</p>
+      </article>
+      <article>
+        <p class="tag">LETTER</p>
+        <h3>Dear Friends...</h3>
+        <p>A place for stories, thoughts and little updates.</p>
+      </article>
+      <article>
+        <p class="tag">CREATIVE CHALLENGE</p>
+        <h3>Your View From Here</h3>
+        <p>Create something inspired by your surroundings.</p>
+      </article>
+    </div>
+  </section>
+</body>
+</html>
