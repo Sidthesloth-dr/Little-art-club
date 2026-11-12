@@ -118,13 +118,13 @@ body {
 /* Real wax seal image */
 .envelope-art .wax-seal {
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 55px;
-  height: 55px;
-  z-index: 4;
-  transition: opacity 0.2s ease;
+  width: 38px;
+  height: 38px;
+  z-index: 5;
+  transition: opacity 0.25s ease;
 }
 
 .envelope-art .wax-seal img {
@@ -173,6 +173,10 @@ body {
 }
 .envelope-art::after {
   content: none;
+}
+.envelope-art::after,
+.envelope-art .seal {
+  display: none;
 }
 </style>
 </head>
@@ -258,13 +262,11 @@ body {
 </span>
 
 <strong>To whoever finds this</strong><small>an open letter · sample</small></button><button class="envelope" data-letter="create" aria-label="Open letter about making things">
-
 <span class="envelope-art">
-  <span class="inner-letter"></span>
-  <span class="flap"></span>
-  <span class="wax-seal">♡</span>
+  <span class="wax-seal">
+    <img src="images/decorations/green-wax-seal.png" alt="">
+  </span>
 </span>
-
 <strong>Keep making things</strong><small>an open letter · sample</small></button></div><img class="decor bow" src="images/decorations/pink-watercolor-bow.png" alt=""></section>
 </div>
 </main><footer>keep making things ♡</footer>
