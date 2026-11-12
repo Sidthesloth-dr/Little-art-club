@@ -61,7 +61,7 @@ body {
   right: 25px;
   transform: rotate(12deg);
 }
-/* Mailbox */
+/* Mailbox - upper-right corner */
 .stamp-mailbox {
   top: -25px;
   left: 25px;
@@ -87,35 +87,51 @@ body {
 </style>
 </head>
 <body>
-<img
-  class="postage-decoration postage-one"
-  src="images/decorations/blue-floral-stamp.png"
-  alt=""
->
-<img
-  class="postage-decoration postage-two"
-  src="images/decorations/blue-pear-stamp.png"
-  alt=""
->
-<img
-  class="postage-decoration postage-three"
-  src="images/decorations/fish-stamp.png"
-  alt=""
->
 <header><a class="brand" href="index.html">the little art club</a><nav aria-label="Main navigation"><a href="index.html">HOME</a><a href="letters.html" aria-current="page">LETTERS</a><a href="index.html#posts">ARTWORK</a><a href="index.html#posts">CREATIVE EXCHANGE</a></nav></header>
 <main>
-<section class="intro stamped-box"
-<img
-  class="box-stamp stamp-welcome"
-  src="images/decorations/blue-floral-stamp.png"
-  alt=""
->
->
-<div class="kicker">THE LITTLE ART CLUB POST OFFICE</div><h1>Letters & Little Notes</h1><p class="script">sealed with love, sent with care ♡</p><p>Letters for a friend, notes for the club, and little messages left for whoever finds them.</p></section>
+
+<section class="intro stamped-box">
+  <img
+    class="box-stamp stamp-welcome"
+    src="images/decorations/blue-floral-stamp.png"
+    alt=""
+  >
+  <div class="kicker">
+    THE LITTLE ART CLUB POST OFFICE
+  </div>
+  <h1>Letters & Little Notes</h1>
+  <p class="script">
+    sealed with love, sent with care ♡
+  </p>
+  <p>
+    Letters for a friend, notes for the club,
+    and little messages left for whoever finds them.
+  </p>
+</section>
 <div class="post-office">
-<section class="panel mailbox" aria-labelledby="mailbox-title"><span class="kicker">01 / PERSONAL POST</span><h2 id="mailbox-title">My Mailbox</h2><p>A place for letters addressed just to you.</p><p class="demo-warning"><strong>Design preview:</strong> This is a sample envelope, not a private inbox. Member sign-in and private delivery will be added later.</p><div class="letter-list"><button class="envelope" data-letter="sample" aria-label="Open sample letter"><span class="envelope-art"></span><strong>A letter for you</strong><small>sample envelope · click to open</small></button></div><img class="decor flower" src="images/decorations/white-pressed-flowers.png" alt=""></section>
-<section class="panel" aria-labelledby="write-title"><span class="kicker">02 / THE WRITING DESK</span><h2 id="write-title">Write a Letter</h2><p>Choose your stationery and who will receive your words.</p><div class="form-grid"><label for="recipient">Send to</label><select id="recipient"><option value="friend">One friend — private (coming soon)</option><option value="club">The whole club (coming soon)</option><option value="public">The Open Postbox — public (coming soon)</option></select><label for="subject">Letter title</label><input id="subject" placeholder="A little note about..." maxlength="100"><label for="message">Your letter</label><textarea id="message" placeholder="Dear friend, ..."></textarea></div><button class="button" id="preview-button" type="button">PREVIEW MY LETTER</button><p class="note">Preview only. Your letter is not saved or sent yet.</p><img class="decor stamp" src="images/decorations/blue-floral-stamp.png" alt=""></section>
-<section class="panel open-postbox" aria-labelledby="public-title"><span class="kicker">03 / LETTERS FOR EVERYONE</span><h2 id="public-title">The Open Postbox</h2><p>Little letters left for anyone passing through. No account needed to read public letters.</p><div class="letter-list"><button class="envelope" data-letter="found" aria-label="Open letter to whoever finds this"><span class="envelope-art"></span><strong>To whoever finds this</strong><small>an open letter · sample</small></button><button class="envelope" data-letter="create" aria-label="Open letter about making things"><span class="envelope-art"></span><strong>Keep making things</strong><small>an open letter · sample</small></button></div><img class="decor bow" src="images/decorations/pink-watercolor-bow.png" alt=""></section>
+<section class="panel mailbox stamped-box" aria-labelledby="mailbox-title">
+  <img
+    class="box-stamp stamp-mailbox"
+    src="images/decorations/blue-pear-stamp.png"
+    alt=""
+  >
+<span class="kicker">01 / PERSONAL POST</span><h2 id="mailbox-title">My Mailbox</h2><p>A place for letters addressed just to you.</p><p class="demo-warning"><strong>Design preview:</strong> This is a sample envelope, not a private inbox. Member sign-in and private delivery will be added later.</p><div class="letter-list"><button class="envelope" data-letter="sample" aria-label="Open sample letter"><span class="envelope-art"></span><strong>A letter for you</strong><small>sample envelope · click to open</small></button></div><img class="decor flower" src="images/decorations/white-pressed-flowers.png" alt=""></section>
+<section class="panel stamped-box" aria-labelledby="write-title">
+  <img
+    class="box-stamp stamp-writing"
+    src="images/decorations/botanical-postage-stamp.png"
+    alt=""
+  >
+<span class="kicker">02 / THE WRITING DESK</span><h2 id="write-title">Write a Letter</h2><p>Choose your stationery and who will receive your words.</p><div class="form-grid"><label for="recipient">Send to</label><select id="recipient"><option value="friend">One friend — private (coming soon)</option><option value="club">The whole club (coming soon)</option><option value="public">The Open Postbox — public (coming soon)</option></select><label for="subject">Letter title</label><input id="subject" placeholder="A little note about..." maxlength="100"><label for="message">Your letter</label><textarea id="message" placeholder="Dear friend, ..."></textarea></div><button class="button" id="preview-button" type="button">PREVIEW MY LETTER</button><p class="note">Preview only. Your letter is not saved or sent yet.</p>
+</section>
+<section class="panel open-postbox stamped-box" aria-labelledby="public-title">
+
+  <img
+    class="box-stamp stamp-postbox"
+    src="images/decorations/fish-stamp.png"
+    alt=""
+  >
+<span class="kicker">03 / LETTERS FOR EVERYONE</span><h2 id="public-title">The Open Postbox</h2><p>Little letters left for anyone passing through. No account needed to read public letters.</p><div class="letter-list"><button class="envelope" data-letter="found" aria-label="Open letter to whoever finds this"><span class="envelope-art"></span><strong>To whoever finds this</strong><small>an open letter · sample</small></button><button class="envelope" data-letter="create" aria-label="Open letter about making things"><span class="envelope-art"></span><strong>Keep making things</strong><small>an open letter · sample</small></button></div><img class="decor bow" src="images/decorations/pink-watercolor-bow.png" alt=""></section>
 </div>
 </main><footer>keep making things ♡</footer>
 <div class="modal" id="letter-modal" role="dialog" aria-modal="true" aria-labelledby="letter-heading" aria-hidden="true"><div class="letter-sheet"><button class="close" id="close-letter" aria-label="Close letter">×</button><div class="kicker" id="letter-kicker">A LITTLE LETTER</div><h2 id="letter-heading">Dear friend,</h2><p id="letter-content"></p><p class="script" id="letter-signature">with love ♡</p></div></div>
