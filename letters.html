@@ -41,6 +41,49 @@
 body {
   position: relative;
 }
+
+/* Stamps attached to the cream stationery */
+.stamped-box {
+  position: relative;
+  overflow: visible;
+}
+.box-stamp {
+  position: absolute;
+  width: 85px;
+  height: auto;
+  z-index: 5;
+  pointer-events: none;
+  filter: drop-shadow(2px 4px 3px rgba(40, 30, 20, 0.2));
+}
+/* Welcome box */
+.stamp-welcome {
+  top: -25px;
+  right: 25px;
+  transform: rotate(12deg);
+}
+/* Mailbox */
+.stamp-mailbox {
+  top: -25px;
+  left: 25px;
+  transform: rotate(-12deg);
+}
+/* Write a Letter */
+.stamp-writing {
+  top: -25px;
+  right: 25px;
+  transform: rotate(9deg);
+}
+/* Open Postbox */
+.stamp-postbox {
+  top: -25px;
+  right: 35px;
+  transform: rotate(-10deg);
+}
+@media (max-width: 700px) {
+  .box-stamp {
+    width: 58px;
+  }
+}
 </style>
 </head>
 <body>
@@ -61,7 +104,14 @@ body {
 >
 <header><a class="brand" href="index.html">the little art club</a><nav aria-label="Main navigation"><a href="index.html">HOME</a><a href="letters.html" aria-current="page">LETTERS</a><a href="index.html#posts">ARTWORK</a><a href="index.html#posts">CREATIVE EXCHANGE</a></nav></header>
 <main>
-<section class="intro"><div class="kicker">THE LITTLE ART CLUB POST OFFICE</div><h1>Letters & Little Notes</h1><p class="script">sealed with love, sent with care ♡</p><p>Letters for a friend, notes for the club, and little messages left for whoever finds them.</p></section>
+<section class="intro stamped-box"
+<img
+  class="box-stamp stamp-welcome"
+  src="images/decorations/blue-floral-stamp.png"
+  alt=""
+>
+>
+<div class="kicker">THE LITTLE ART CLUB POST OFFICE</div><h1>Letters & Little Notes</h1><p class="script">sealed with love, sent with care ♡</p><p>Letters for a friend, notes for the club, and little messages left for whoever finds them.</p></section>
 <div class="post-office">
 <section class="panel mailbox" aria-labelledby="mailbox-title"><span class="kicker">01 / PERSONAL POST</span><h2 id="mailbox-title">My Mailbox</h2><p>A place for letters addressed just to you.</p><p class="demo-warning"><strong>Design preview:</strong> This is a sample envelope, not a private inbox. Member sign-in and private delivery will be added later.</p><div class="letter-list"><button class="envelope" data-letter="sample" aria-label="Open sample letter"><span class="envelope-art"></span><strong>A letter for you</strong><small>sample envelope · click to open</small></button></div><img class="decor flower" src="images/decorations/white-pressed-flowers.png" alt=""></section>
 <section class="panel" aria-labelledby="write-title"><span class="kicker">02 / THE WRITING DESK</span><h2 id="write-title">Write a Letter</h2><p>Choose your stationery and who will receive your words.</p><div class="form-grid"><label for="recipient">Send to</label><select id="recipient"><option value="friend">One friend — private (coming soon)</option><option value="club">The whole club (coming soon)</option><option value="public">The Open Postbox — public (coming soon)</option></select><label for="subject">Letter title</label><input id="subject" placeholder="A little note about..." maxlength="100"><label for="message">Your letter</label><textarea id="message" placeholder="Dear friend, ..."></textarea></div><button class="button" id="preview-button" type="button">PREVIEW MY LETTER</button><p class="note">Preview only. Your letter is not saved or sent yet.</p><img class="decor stamp" src="images/decorations/blue-floral-stamp.png" alt=""></section>
