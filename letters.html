@@ -86,12 +86,99 @@ body {
     width: 85px;
   }
 }
+
+/* Envelope opening animation */
+
+.envelope {
+  perspective: 900px;
+}
+
+.envelope-art {
+  position: relative;
+  overflow: visible;
+  transform-style: preserve-3d;
+}
+
+/* Triangular flap */
+.envelope-art .flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: #d6c3a5;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transition: transform 0.65s ease;
+  z-index: 3;
+  backface-visibility: hidden;
+}
+
+
+/* Real wax seal image */
+.envelope-art .wax-seal {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55px;
+  height: 55px;
+  z-index: 4;
+  transition: opacity 0.2s ease;
+}
+
+.envelope-art .wax-seal img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(1px 3px 3px rgba(40, 20, 15, 0.25));
+}
+
+.envelope.opening .wax-seal {
+  opacity: 0;
+}
+
+/* Letter peeking out */
+.envelope-art .inner-letter {
+  position: absolute;
+  left: 12%;
+  bottom: 8px;
+  width: 76%;
+  height: 75%;
+  background: #fff9ee;
+  box-shadow: 0 2px 8px #34201525;
+  z-index: 2;
+  transition: transform 0.65s ease 0.25s;
+}
+/* Open state */
+.envelope.opening .flap {
+  transform: rotateX(180deg);
+}
+.envelope.opening .wax-seal {
+  opacity: 0;
+}
+.envelope.opening .inner-letter {
+  transform: translateY(-55px);
+}
+/* Prevent repeated clicks while opening */
+.envelope.opening {
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .envelope-art .flap,
+  .envelope-art .inner-letter {
+    transition: none;
+  }
+}
+.envelope-art::after {
+  content: none;
+}
 </style>
 </head>
 <body>
 <header><a class="brand" href="index.html">the little art club</a><nav aria-label="Main navigation"><a href="index.html">HOME</a><a href="letters.html" aria-current="page">LETTERS</a><a href="index.html#posts">ARTWORK</a><a href="index.html#posts">CREATIVE EXCHANGE</a></nav></header>
 <main>
-
 <section class="intro stamped-box">
   <img
     class="box-stamp stamp-welcome"
@@ -117,7 +204,22 @@ body {
     src="images/decorations/blue-pear-stamp.png"
     alt=""
   >
-<span class="kicker">01 / PERSONAL POST</span><h2 id="mailbox-title">My Mailbox</h2><p>A place for letters addressed just to you.</p><p class="demo-warning"><strong>Design preview:</strong> This is a sample envelope, not a private inbox. Member sign-in and private delivery will be added later.</p><div class="letter-list"><button class="envelope" data-letter="sample" aria-label="Open sample letter"><span class="envelope-art"></span><strong>A letter for you</strong><small>sample envelope · click to open</small></button></div><img class="decor flower" src="images/decorations/white-pressed-flowers.png" alt=""></section>
+<span class="kicker">01 / PERSONAL POST</span><h2 id="mailbox-title">My Mailbox</h2><p>A place for letters addressed just to you.</p><p class="demo-warning"><strong>Design preview:</strong> This is a sample envelope, not a private inbox. Member sign-in and private delivery will be added later.</p><div class="letter-list"><button class="envelope" data-letter="sample" aria-label="Open sample letter">
+  
+<span class="envelope-art">
+  <span class="inner-letter"></span>
+  <span class="flap"></span>
+  
+<span class="wax-seal">
+  <img
+    src="images/decorations/green-wax-seal.png"
+    alt=""
+  >
+</span>
+
+</span>
+
+<strong>A letter for you</strong><small>sample envelope · click to open</small></button></div><img class="decor flower" src="images/decorations/white-pressed-flowers.png" alt=""></section>
 <section class="panel stamped-box" aria-labelledby="write-title">
   <img
     class="box-stamp stamp-writing"
@@ -133,7 +235,37 @@ body {
     src="images/decorations/fish-stamp.png"
     alt=""
   >
-<span class="kicker">03 / LETTERS FOR EVERYONE</span><h2 id="public-title">The Open Postbox</h2><p>Little letters left for anyone passing through. No account needed to read public letters.</p><div class="letter-list"><button class="envelope" data-letter="found" aria-label="Open letter to whoever finds this"><span class="envelope-art"></span><strong>To whoever finds this</strong><small>an open letter · sample</small></button><button class="envelope" data-letter="create" aria-label="Open letter about making things"><span class="envelope-art"></span><strong>Keep making things</strong><small>an open letter · sample</small></button></div><img class="decor bow" src="images/decorations/pink-watercolor-bow.png" alt=""></section>
+<span class="kicker">03 / LETTERS FOR EVERYONE</span><h2 id="public-title">The Open Postbox</h2><p>Little letters left for anyone passing through. No account needed to read public letters.</p><div class="letter-list"><button class="envelope" data-letter="found" aria-label="Open letter to whoever finds this">
+
+<span class="envelope-art">
+  <span class="inner-letter"></span>
+  <span class="flap"></span>
+  
+<span class="wax-seal">
+  <img
+    src="images/decorations/green-wax-seal.png"
+    alt=""
+  >
+</span>
+
+<span class="wax-seal">
+  <img
+    src="images/decorations/green-wax-seal.png"
+    alt=""
+  >
+</span>
+
+</span>
+
+<strong>To whoever finds this</strong><small>an open letter · sample</small></button><button class="envelope" data-letter="create" aria-label="Open letter about making things">
+
+<span class="envelope-art">
+  <span class="inner-letter"></span>
+  <span class="flap"></span>
+  <span class="wax-seal">♡</span>
+</span>
+
+<strong>Keep making things</strong><small>an open letter · sample</small></button></div><img class="decor bow" src="images/decorations/pink-watercolor-bow.png" alt=""></section>
 </div>
 </main><footer>keep making things ♡</footer>
 <div class="modal" id="letter-modal" role="dialog" aria-modal="true" aria-labelledby="letter-heading" aria-hidden="true"><div class="letter-sheet"><button class="close" id="close-letter" aria-label="Close letter">×</button><div class="kicker" id="letter-kicker">A LITTLE LETTER</div><h2 id="letter-heading">Dear friend,</h2><p id="letter-content"></p><p class="script" id="letter-signature">with love ♡</p></div></div>
@@ -142,7 +274,20 @@ const samples={sample:{kicker:'A SAMPLE LETTER',title:'Dear friend,',body:'Imagi
 const modal=document.getElementById('letter-modal');const close=document.getElementById('close-letter');let lastFocus=null;
 function openLetter(letter){lastFocus=document.activeElement;document.getElementById('letter-kicker').textContent=letter.kicker;document.getElementById('letter-heading').textContent=letter.title;document.getElementById('letter-content').textContent=letter.body;document.getElementById('letter-signature').textContent=letter.signature;modal.classList.add('show');modal.setAttribute('aria-hidden','false');close.focus()}
 function closeLetter(){modal.classList.remove('show');modal.setAttribute('aria-hidden','true');if(lastFocus)lastFocus.focus()}
-document.querySelectorAll('[data-letter]').forEach(el=>el.addEventListener('click',()=>openLetter(samples[el.dataset.letter])));
+
+document.querySelectorAll('[data-letter]').forEach(el => {
+  el.addEventListener('click', () => {
+    if (el.classList.contains('opening')) return;
+
+    el.classList.add('opening');
+
+    setTimeout(() => {
+      openLetter(samples[el.dataset.letter]);
+      el.classList.remove('opening');
+    }, 950);
+  });
+});
+
 document.getElementById('preview-button').addEventListener('click',()=>openLetter({kicker:'UNSENT LETTER PREVIEW',title:document.getElementById('subject').value.trim()||'Dear friend,',body:document.getElementById('message').value.trim()||'Your words will appear here when you write a letter.',signature:'not sent · preview only ♡'}));
 close.addEventListener('click',closeLetter);modal.addEventListener('click',e=>{if(e.target===modal)closeLetter()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))closeLetter()});
 </script>
