@@ -78,4 +78,395 @@
   }
 }
 
-</style></head><body><header><a class="brand" href="#home">the little art club</a><nav aria-label="Main navigation"><a href="#posts">HOME</a><a href="#posts">LETTERS</a><a href="#posts">ARTWORK</a><a href="#posts">CREATIVE EXCHANGE</a></nav></header><main id="home"><section class="hero"><div class="paper"><div class="eyebrow">A FRIENDS' CREATIVE SPACE</div><h1>ART CLUB</h1><p class="scribble">create · share · inspire · repeat</p><p class="intro">A little corner of the internet for the things we make, the letters we write, and the creative life we're building together.</p></div><div class="polaroids" aria-label="Scrapbook photographs"><div class="polaroid"><img src="images/water-background.jpg" alt="Sunlight rippling over rocks beneath water"><p>good ideas flow here</p></div><div class="polaroid"><img src="images/water-background.jpg" alt="Water reflections on stones"><p>made with love</p></div></div></section><section class="paper-section" id="posts"><div class="section-head"><h2>Recent Posts</h2><a class="button" href="mailto:?subject=Little%20Art%20Club">+ CREATE A POST (COMING SOON)</a></div><div class="cards"><article class="card"><img src="images/water-background.jpg" alt="Water rippling over rocks"><div class="category">ARTWORK</div><h3>Rock Pool Study</h3><p>A series of photos from a quiet afternoon by the water.</p></article><article class="card"><div class="placeholder">dear friends...</div><div class="category">LETTER</div><h3>A Slow Morning</h3><p>Thoughts on creativity, routines, and finding time to make things again.</p></article><article class="card"><div class="placeholder">make something</div><div class="category">CREATIVE CHALLENGE</div><h3>Your View From Here</h3><p>Create something inspired by the view outside your window.</p></article></div><p class="footnote">making a life of this ✳</p></section></main><footer>keep making things ♡</footer></body></html>
+/* THE LITTLE ART CLUB - OPEN JOURNAL */
+
+.paper-section.journal-desk {
+  margin: 0;
+  padding: 65px clamp(16px, 5vw, 85px) 85px;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      transparent 0 18px,
+      rgba(74, 43, 22, .045) 19px,
+      transparent 23px 52px
+    ),
+    linear-gradient(
+      90deg,
+      #a77c59,
+      #c69b73 25%,
+      #b88a64 55%,
+      #d1a780 80%,
+      #a77c59
+    );
+  box-shadow: inset 0 18px 35px #33201340;
+  overflow: hidden;
+}
+
+.paper-section.journal-desk::before {
+  content: none;
+}
+
+.journal-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.journal-heading h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 56px);
+  margin: 0 0 8px;
+}
+
+.journal-heading p {
+  font: 27px 'Caveat', cursive;
+  margin: 0;
+}
+
+.journal {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: 8px 15px 15px 8px;
+  background: #e8dcc6;
+  box-shadow:
+    0 5px 0 #b9a48b,
+    0 10px 0 #8f7159,
+    0 24px 45px #38231875;
+  isolation: isolate;
+}
+
+.journal::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 26px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #60463225 28%,
+    #fff9ed75 48%,
+    #60463230 75%,
+    transparent
+  );
+}
+
+.journal-page {
+  position: relative;
+  min-width: 0;
+  min-height: 610px;
+  padding: 65px clamp(25px, 4vw, 60px);
+  background: #f5eddd;
+}
+
+.journal-page.left {
+  border-radius: 7px 2px 2px 7px;
+  background:
+    linear-gradient(
+      90deg,
+      #f8f0e2 0%,
+      #f5eddd 83%,
+      #dfd1b9 100%
+    );
+}
+
+.journal-page.right {
+  border-radius: 2px 12px 12px 2px;
+  background:
+    linear-gradient(
+      90deg,
+      #ded0b8 0%,
+      #f5eddd 12%,
+      #f8f0e2 100%
+    );
+}
+
+.journal-page h3 {
+  font: 32px 'Playfair Display', serif;
+  margin: 12px 0;
+}
+
+.journal-page p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.journal-label {
+  color: #825956;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.journal-photo {
+  background: #fffaf0;
+  padding: 12px 12px 35px;
+  box-shadow: 2px 5px 15px #49372c35;
+  transform: rotate(-3deg);
+  margin: 28px 8px;
+}
+
+.journal-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.handwritten {
+  font: 26px 'Caveat', cursive !important;
+  color: #825956;
+}
+
+.letter {
+  margin: 35px 0;
+  padding: 30px;
+  background: #fffaf0;
+  box-shadow: 2px 5px 15px #49372c22;
+  transform: rotate(1deg);
+}
+
+.letter h3 {
+  font: 34px 'Caveat', cursive;
+}
+
+.challenge {
+  position: relative;
+  margin-top: 40px;
+  padding: 25px;
+  background: #e8d9c2;
+  border: 1px solid #d1bda1;
+  transform: rotate(-2deg);
+}
+
+.challenge h3 {
+  font-size: 25px;
+}
+
+.decoration {
+  position: absolute;
+  display: block;
+  height: auto;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.tape-photo {
+  width: 125px;
+  top: 115px;
+  left: 34%;
+  transform: rotate(12deg);
+}
+
+.flower-corner {
+  width: 135px;
+  bottom: -25px;
+  left: -35px;
+  transform: rotate(-18deg);
+}
+
+.stamp-corner {
+  width: 95px;
+  top: 25px;
+  right: 25px;
+  transform: rotate(12deg);
+}
+
+.stamp-letter {
+  width: 80px;
+  top: 20px;
+  right: 20px;
+  transform: rotate(8deg);
+}
+
+.bow-corner {
+  width: 110px;
+  bottom: -30px;
+  right: -25px;
+  transform: rotate(-12deg);
+}
+
+.journal-bottom {
+  text-align: center;
+  margin-top: 45px;
+}
+
+.journal-bottom .button {
+  box-shadow: 3px 5px 0 #65463045;
+}
+
+@media (max-width: 850px) {
+  .journal {
+    grid-template-columns: 1fr;
+    max-width: 550px;
+  }
+
+  .journal::after {
+    display: none;
+  }
+
+  .journal-page {
+    min-height: auto;
+    padding: 55px 35px;
+  }
+
+  .journal-page.left {
+    border-radius: 8px 8px 0 0;
+    background: #f5eddd;
+  }
+
+  .journal-page.right {
+    border-radius: 0 0 8px 8px;
+    background: #f5eddd;
+    border-top: 2px solid #d9c9ae;
+  }
+}
+
+@media (max-width: 560px) {
+  .journal-page {
+    padding: 50px 25px;
+  }
+
+  .letter {
+    padding: 22px;
+  }
+
+  .tape-photo {
+    top: 110px;
+    left: 28%;
+  }
+
+  .stamp-corner {
+    width: 65px;
+  }
+}
+
+</style></head><body><header><a class="brand" href="#home">the little art club</a><nav aria-label="Main navigation"><a href="#posts">HOME</a><a href="#posts">LETTERS</a><a href="#posts">ARTWORK</a><a href="#posts">CREATIVE EXCHANGE</a></nav></header><main id="home"><section class="hero"><div class="paper"><div class="eyebrow">A FRIENDS' CREATIVE SPACE</div><h1>ART CLUB</h1><p class="scribble">create · share · inspire · repeat</p><p class="intro">A little corner of the internet for the things we make, the letters we write, and the creative life we're building together.</p></div><div class="polaroids" aria-label="Scrapbook photographs"><div class="polaroid"><img src="images/water-background.jpg" alt="Sunlight rippling over rocks beneath water"><p>good ideas flow here</p></div><div class="polaroid"><img src="images/water-background.jpg" alt="Water reflections on stones"><p>made with love</p></div></div></section>
+<section class="paper-section journal-desk" id="posts">
+
+  <div class="journal-heading">
+    <h2>From Our Journal</h2>
+    <p>little things we've been making lately</p>
+  </div>
+
+  <div class="journal">
+
+    <!-- LEFT PAGE: ARTWORK -->
+    <div class="journal-page left">
+
+      <span class="journal-label">01 / ARTWORK</span>
+
+      <div class="journal-photo">
+        <img
+          src="images/water-background.jpg"
+          alt="Sunlight on rocks beneath water"
+        >
+      </div>
+
+      <img
+        class="decoration tape-photo"
+        src="images/decorations/green-gingham-tape.png"
+        alt=""
+      >
+
+      <h3>Rock Pool Study</h3>
+
+      <p>
+        A series of photographs from a quiet
+        afternoon by the water.
+      </p>
+
+      <p class="handwritten">
+        a little moment worth keeping ♡
+      </p>
+
+      <img
+        class="decoration flower-corner"
+        src="images/decorations/white-pressed-flowers.png"
+        alt=""
+      >
+
+      <img
+        class="decoration stamp-corner"
+        src="images/decorations/sailboat-stamp.png"
+        alt=""
+      >
+
+    </div>
+
+    <!-- RIGHT PAGE: LETTERS & CHALLENGES -->
+    <div class="journal-page right">
+
+      <span class="journal-label">02 / LETTERS</span>
+
+      <div class="letter">
+
+        <h3>Dear friends,</h3>
+
+        <p>
+          A slow morning, a cup of coffee,
+          and a few thoughts about finding
+          time to make things again.
+        </p>
+
+        <p>
+          Here's to more little creative
+          moments together.
+        </p>
+
+        <p class="handwritten">with love ♡</p>
+
+      </div>
+
+      <img
+        class="decoration stamp-letter"
+        src="images/decorations/botanical-postage-stamp.png"
+        alt=""
+      >
+
+      <div class="challenge">
+
+        <span class="journal-label">
+          03 / CREATIVE EXCHANGE
+        </span>
+
+        <h3>Your View From Here</h3>
+
+        <p>
+          Make something inspired by
+          the view outside your window.
+        </p>
+
+        <p class="handwritten">
+          a little creative challenge ✳
+        </p>
+
+      </div>
+
+      <img
+        class="decoration bow-corner"
+        src="images/decorations/pink-watercolor-bow.png"
+        alt=""
+      >
+
+    </div>
+
+  </div>
+
+  <div class="journal-bottom">
+    <a
+      class="button"
+      href="mailto:?subject=Little%20Art%20Club"
+    >
+      + CREATE A POST (COMING SOON)
+    </a>
+  </div>
+
+</section>
+
