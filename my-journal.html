@@ -202,6 +202,88 @@
   cursor: wait;
 }
 
+/* My Gallery */
+
+#my-gallery-section {
+  margin-top: 45px;
+  padding-top: 25px;
+  border-top: 1px dashed #c2a77e;
+}
+
+.gallery-heading {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.gallery-heading h2 {
+  font: 40px 'Caveat', cursive;
+  color: #825956;
+  margin-bottom: 5px;
+}
+
+.gallery-heading p {
+  font-size: 13px;
+  color: #75645c;
+}
+
+.artwork-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 25px;
+}
+
+.artwork-polaroid {
+  background: #fffdf7;
+  padding: 12px 12px 20px;
+  box-shadow: 3px 5px 15px #33292525;
+  min-width: 0;
+}
+
+.artwork-polaroid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.artwork-polaroid h3 {
+  font: 27px 'Caveat', cursive;
+  color: #825956;
+  margin: 14px 0 5px;
+  overflow-wrap: anywhere;
+}
+
+.artwork-polaroid p {
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.artwork-date {
+  color: #88766b;
+  font-size: 11px;
+}
+
+.artwork-polaroid .delete-artwork {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: transparent;
+  color: #825956;
+  border: 1px solid #b99a95;
+  font-size: 12px;
+}
+
+.artwork-polaroid .delete-artwork:hover {
+  background: #f5e8e5;
+}
+
+@media (max-width: 650px) {
+  .artwork-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
   </style>
 </head>
 
@@ -275,11 +357,17 @@
   <p id="artwork-message" role="status"></p>
 </section>
 
-        <section class="journal-card">
-          <h3>🖼 My Gallery</h3>
-          <p>Revisit your creations and manage the artwork you've shared.</p>
-          <button type="button" disabled>My Artwork — Coming Soon</button>
-        </section>
+<section class="journal-card">
+  <h3>🖼 My Gallery</h3>
+  <p>All the little things you've made, collected in one place.</p>
+
+  <button type="button" id="show-my-gallery">
+    View My Artwork ♡
+  </button>
+
+  <p id="gallery-message" role="status"></p>
+</section>
+
 
         <section class="journal-card">
           <h3>💌 My Letters</h3>
@@ -293,6 +381,15 @@
           <button type="button" disabled>Customize — Coming Soon</button>
         </section>
       </div>
+
+<section id="my-gallery-section" hidden>
+  <div class="gallery-heading">
+    <h2>My Little Gallery ♡</h2>
+    <p>a collection of things I've created</p>
+  </div>
+
+  <div id="my-artwork-grid" class="artwork-grid"></div>
+</section>
 
       <section class="account">
         <p>Signed in as <span id="account-email"></span></p>
@@ -491,6 +588,145 @@ artworkForm.addEventListener("submit", async event => {
     publishButton.textContent = "Publish to the Club ♡";
   }
 });
+
+const gallerySection =
+  document.getElementById("my-gallery-section");
+const artworkGrid =
+  document.getElementById("my-artwork-grid");
+const galleryMessage =
+  document.getElementById("gallery-message");
+
+document.getElementById("show-my-gallery")
+  .addEventListener("click", async () => {
+    gallerySection.hidden = !gallerySection.hidden;
+
+    if (!gallerySection.hidden) {
+      await loadMyGallery();
+      gallerySection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  });
+
+async function loadMyGallery() {
+  galleryMessage.textContent = "Opening your gallery...";
+  artworkGrid.replaceChildren();
+
+  const { data: authData, error: authError } =
+    await client.auth.getUser();
+
+  if (authError || !authData.user) {
+    galleryMessage.textContent =
+      "Please sign in to see your artwork.";
+    return;
+  }
+
+  const user = authData.user;
+
+  const { data: artworks, error } = await client
+    .from("artworks")
+    .select("id, title, description, image_path, created_at")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    galleryMessage.textContent =
+      "Could not load your gallery: " + error.message;
+    return;
+  }
+
+  if (!artworks || artworks.length === 0) {
+    galleryMessage.textContent =
+      "Your gallery is waiting for its first creation ♡";
+    return;
+  }
+
+  galleryMessage.textContent =
+    `${artworks.length} little creation(s) in your journal ♡`;
+
+  for (const artwork of artworks) {
+    const card = document.createElement("article");
+    card.className = "artwork-polaroid";
+
+    const image = document.createElement("img");
+    const { data: imageData } = client.storage
+      .from("artwork-images")
+      .getPublicUrl(artwork.image_path);
+
+    image.src = imageData.publicUrl;
+    image.alt = artwork.title;
+    image.loading = "lazy";
+
+    const title = document.createElement("h3");
+    title.textContent = artwork.title;
+
+    const date = document.createElement("div");
+    date.className = "artwork-date";
+    date.textContent = new Date(
+      artwork.created_at
+    ).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+
+    const description = document.createElement("p");
+    description.textContent = artwork.description || "";
+
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "delete-artwork";
+    deleteButton.textContent = "Delete Artwork";
+
+    deleteButton.addEventListener("click", async () => {
+      const confirmed = confirm(
+        `Permanently delete "${artwork.title}"?`
+      );
+
+      if (!confirmed) return;
+
+      deleteButton.disabled = true;
+      galleryMessage.textContent = "Deleting artwork...";
+
+      const { error: deleteError } = await client
+        .from("artworks")
+        .delete()
+        .eq("id", artwork.id)
+        .eq("user_id", user.id);
+
+      if (deleteError) {
+        galleryMessage.textContent =
+          "Could not delete artwork: " + deleteError.message;
+        deleteButton.disabled = false;
+        return;
+      }
+
+      // Delete the image after the database record.
+      const { error: imageError } = await client.storage
+        .from("artwork-images")
+        .remove([artwork.image_path]);
+
+      if (imageError) {
+        console.warn("Image deletion failed:", imageError);
+        galleryMessage.textContent =
+          "Artwork removed, but its image may need cleanup.";
+      }
+
+      await loadMyGallery();
+    });
+
+    card.append(
+      image,
+      title,
+      date,
+      description,
+      deleteButton
+    );
+
+    artworkGrid.appendChild(card);
+  }
+}
 
     openJournal();
   </script>
