@@ -248,11 +248,9 @@
         return;
       }
 
-      document.getElementById("member-email").textContent =
-        data.user?.email || email;
-      show(memberArea);
-    });
-
+      window.location.href = "my-journal.html";
+      
+ });
     document.getElementById("sign-out")
       .addEventListener("click", async () => {
         const { error } = await client.auth.signOut();
