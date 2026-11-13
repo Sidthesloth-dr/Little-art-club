@@ -130,6 +130,13 @@
              autocomplete="current-password" required>
 
       <button type="submit">Sign In</button>
+      
+<p>
+  <a href="#" id="forgot-password">
+    Forgot your password? ♡
+  </a>
+</p>
+
     </form>
 
     <section id="member-area" hidden>
@@ -256,6 +263,38 @@
         message.textContent = "You've signed out.";
         show(loginForm);
       });
+
+document.getElementById("forgot-password")
+  .addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+
+    if (!email) {
+      message.textContent =
+        "Please enter your email address first.";
+      return;
+    }
+
+    message.textContent = "Requesting your password reset link...";
+
+    const { error } = await client.auth.resetPasswordForEmail(
+      email,
+      {
+        redirectTo:
+          "https://sidthesloth-dr.github.io/Little-art-club/account.html"
+      }
+    );
+
+    if (error) {
+      message.textContent = error.message;
+      return;
+    }
+
+    message.textContent =
+      "If this account can receive recovery emails, " +
+      "a password reset link will arrive shortly.";
+  });
 
     initialize();
   </script>
