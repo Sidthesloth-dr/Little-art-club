@@ -338,7 +338,53 @@
   }
 }
 
-</style></head><body><header><a class="brand" href="#home">the little art club</a>
+/* PUBLIC ART GALLERY */
+
+.gallery-intro {
+  font: 25px 'Caveat', cursive;
+  color: #825956;
+  margin: 0 0 30px;
+}
+
+#public-artwork-grid {
+  margin-top: 25px;
+}
+
+#public-artwork-grid .card {
+  min-width: 0;
+  padding-bottom: 24px;
+}
+
+#public-artwork-grid .card img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+#public-artwork-grid .card h3 {
+  overflow-wrap: anywhere;
+}
+
+#public-artwork-grid .card p {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.artwork-post-date {
+  font-size: 11px;
+  color: #88766b;
+  margin-top: 12px;
+}
+
+#public-gallery-status {
+  font: 23px 'Caveat', cursive;
+  color: #825956;
+}
+
+</style>
+</head>
+  <body>
+    <header>
+      <a class="brand" href="#home">the little art club</a>
   <nav aria-label="Main navigation">
     <a href="#posts">HOME</a>
     <a href="letters.html">LETTERS</a>
@@ -382,13 +428,46 @@
     <!-- LEFT PAGE: ARTWORK -->
     <div class="journal-page left">
 
-      <span class="journal-label">01 / ARTWORK</span>
+      
+<span class="journal-label">01 / ARTWORK</span>
 
-      <div class="journal-photo">
-        <img
-          src="images/water-background.jpg"
-          alt="Sunlight on rocks beneath water"
-        >
+<div class="journal-photo">
+  <img
+    id="featured-artwork-image"
+    src="images/water-background.jpg"
+    alt="Sunlight on rocks beneath water"
+  >
+</div>
+
+<img
+  class="decoration tape-photo"
+  src="images/decorations/green-gingham-tape.png"
+  alt=""
+>
+
+<h3 id="featured-artwork-title">Rock Pool Study</h3>
+
+<p id="featured-artwork-description">
+  A series of photographs from a quiet
+  afternoon by the water.
+</p>
+
+<p class="handwritten" id="featured-artwork-note">
+  a little moment worth keeping ♡
+</p>
+
+<img
+  class="decoration flower-corner"
+  src="images/decorations/white-pressed-flowers.png"
+  alt=""
+>
+
+<img
+  class="decoration stamp-corner"
+  src="images/decorations/sailboat-stamp.png"
+  alt=""
+>
+
       </div>
 
       <img
@@ -484,13 +563,34 @@
   <div class="journal-bottom">
     <a
       class="button"
-      href="mailto:?subject=Little%20Art%20Club"
+      href="my-journal.html"
     >
-      + CREATE A POST (COMING SOON)
+      + CREATE A POST 
     </a>
   </div>
 
 </section>
+    
+<section class="paper-section" id="community-gallery">
+  <div class="section-head">
+    <h2>Our Little Art Gallery ♡</h2>
+    <a class="button" href="my-journal.html">
+      + SHARE YOUR ART
+    </a>
+  </div>
+
+  <p class="gallery-intro">
+    A collection of little things made by our friends.
+    Every creation has a story.
+  </p>
+
+  <p id="public-gallery-status" role="status">
+    Opening our art collection...
+  </p>
+
+  <div id="public-artwork-grid" class="cards"></div>
+</section>
+
 </main>
 
 <footer>
@@ -499,5 +599,104 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+
+<script>
+async function loadPublicGallery() {
+  const client = window.artClubSupabase;
+  const grid = document.getElementById("public-artwork-grid");
+  const status = document.getElementById("public-gallery-status");
+
+  if (!client) {
+    status.textContent = "Our gallery is unavailable right now.";
+    return;
+  }
+
+  const { data: artworks, error } = await client
+    .from("artworks")
+    .select("id, title, description, image_path, created_at")
+    .order("created_at", { ascending: false })
+    .limit(60);
+
+  if (error) {
+    status.textContent =
+      "Could not open the gallery: " + error.message;
+    return;
+  }
+
+  grid.replaceChildren();
+
+  if (!artworks || artworks.length === 0) {
+    status.textContent =
+      "Our gallery is waiting for its first creation ♡";
+    return;
+  }
+
+  status.textContent = "";
+
+  // Feature the newest artwork in the open journal.
+  const newest = artworks[0];
+
+  const { data: featuredImage } = client.storage
+    .from("artwork-images")
+    .getPublicUrl(newest.image_path);
+
+  document.getElementById("featured-artwork-image").src =
+    featuredImage.publicUrl;
+
+  document.getElementById("featured-artwork-image").alt =
+    newest.title;
+
+  document.getElementById("featured-artwork-title").textContent =
+    newest.title;
+
+  document.getElementById("featured-artwork-description").textContent =
+    newest.description || "";
+
+  document.getElementById("featured-artwork-note").textContent =
+    "made with love, shared with friends ♡";
+
+  // Create the community gallery cards.
+  for (const artwork of artworks) {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const image = document.createElement("img");
+
+    const { data: imageData } = client.storage
+      .from("artwork-images")
+      .getPublicUrl(artwork.image_path);
+
+    image.src = imageData.publicUrl;
+    image.alt = artwork.title;
+    image.loading = "lazy";
+
+    const category = document.createElement("div");
+    category.className = "category";
+    category.textContent = "FROM OUR ART CLUB";
+
+    const title = document.createElement("h3");
+    title.textContent = artwork.title;
+
+    const description = document.createElement("p");
+    description.textContent = artwork.description || "";
+
+    const date = document.createElement("div");
+    date.className = "artwork-post-date";
+    date.textContent = new Date(
+      artwork.created_at
+    ).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+
+    card.append(image, category, title, description, date);
+    grid.appendChild(card);
+  }
+}
+
+loadPublicGallery();
+</script>
+   
 </body>
 </html>
