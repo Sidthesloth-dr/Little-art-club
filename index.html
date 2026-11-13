@@ -125,10 +125,6 @@
     0 10px 0 #8f7159,
     0 24px 45px #38231875;
   isolation: isolate;
-<!-- Twine across the bottom of the open journal -->
-<img class="scrapbook-decoration scrapbook-twine"
-     src="images/decorations/twine-horizontal.png"
-     alt="" aria-hidden="true">
 }
 
 .journal::after {
@@ -253,9 +249,9 @@
 
 .tape-photo {
   width: 125px;
-  top: 115px;
+  top: -28px;
   left: 34%;
-  transform: rotate(12deg);
+  transform: rotate(9deg);
 }
 
 .flower-corner {
@@ -463,28 +459,31 @@
 
 /* Right page: botanical sprig */
 .scrapbook-fern {
-  width: 125px;
-  top: 32%;
-  right: -45px;
-  transform: rotate(18deg);
+  width: 105px;
+  top: 27%;
+  right: -40px;
+  transform: rotate(-32deg);
 }
 
 /* Right page: baby breath flowers */
 .scrapbook-baby-breath {
   width: 105px;
-  bottom: 10%;
+  top: 57%;
   right: -20px;
+  bottom: auto;
   transform: rotate(-8deg);
 }
 
 /* Twine stretched along the journal bottom */
 .scrapbook-twine {
-  width: 92%;
-  height: 40px;
+  position: absolute;
+  width: 94%;
+  height: 48px;
   object-fit: fill;
-  bottom: 4px;
-  left: 4%;
-  z-index: 6;
+  bottom: -15px;
+  left: 3%;
+  z-index: 10;
+  pointer-events: none;
 }
 
 /* Small pink gingham tape */
@@ -611,6 +610,14 @@
       </div>
       <img class="decoration bow-corner" src="images/decorations/pink-watercolor-bow.png" alt="">
     </div>
+    
+<img
+  class="scrapbook-decoration scrapbook-twine"
+  src="images/decorations/twine-horizontal.png"
+  alt=""
+  aria-hidden="true"
+>
+
   </div>
 
   <div class="journal-bottom">
