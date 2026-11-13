@@ -689,31 +689,36 @@ async function loadMyGallery() {
       deleteButton.disabled = true;
       galleryMessage.textContent = "Deleting artwork...";
 
-      const { error: deleteError } = await client
-        .from("artworks")
-        .delete()
-        .eq("id", artwork.id)
-        .eq("user_id", user.id);
+      
+// First, remove the image from Supabase Storage.
+const { error: imageError } = await client.storage
+  .from("artwork-images")
+  .remove([artwork.image_path]);
 
-      if (deleteError) {
-        galleryMessage.textContent =
-          "Could not delete artwork: " + deleteError.message;
-        deleteButton.disabled = false;
-        return;
-      }
+if (imageError) {
+  galleryMessage.textContent =
+    "Could not delete image: " + imageError.message;
+  deleteButton.disabled = false;
+  return;
+}
 
-      // Delete the image after the database record.
-      const { error: imageError } = await client.storage
-        .from("artwork-images")
-        .remove([artwork.image_path]);
+// Then remove the artwork record.
+const { error: deleteError } = await client
+  .from("artworks")
+  .delete()
+  .eq("id", artwork.id)
+  .eq("user_id", user.id);
 
-      if (imageError) {
-        console.warn("Image deletion failed:", imageError);
-        galleryMessage.textContent =
-          "Artwork removed, but its image may need cleanup.";
-      }
+if (deleteError) {
+  galleryMessage.textContent =
+    "Image removed, but the artwork record could not be deleted: " +
+    deleteError.message;
+  deleteButton.disabled = false;
+  return;
+}
 
-      await loadMyGallery();
+await loadMyGallery();
+
     });
 
     card.append(
