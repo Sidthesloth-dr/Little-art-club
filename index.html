@@ -380,6 +380,47 @@
   color: #825956;
 }
 
+/* JOURNAL LAYOUT FIX */
+
+@media (min-width: 851px) {
+  .journal {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .journal-page.left,
+  .journal-page.right {
+    min-width: 0;
+    width: auto;
+    height: auto;
+  }
+}
+
+.journal-page {
+  box-sizing: border-box;
+}
+
+.journal-page .journal-photo {
+  max-width: 100%;
+}
+
+.journal-page .journal-photo img {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.journal-page h3,
+.journal-page p {
+  overflow-wrap: anywhere;
+}
+
+.journal-page .decoration {
+  pointer-events: none;
+}
+
 </style>
 </head>
   <body>
@@ -428,15 +469,18 @@
     <!-- LEFT PAGE: ARTWORK -->
     <div class="journal-page left">
 
-      
-<span class="journal-label">01 / ARTWORK</span>
+    <!-- Featured artwork, photo, title, description -->
+    <!-- Tape, flowers, stamp decorations -->
 
-<div class="journal-photo">
-  <img
-    id="featured-artwork-image"
-    src="images/water-background.jpg"
-    alt="Sunlight on rocks beneath water"
-  >
+  </div>
+
+  <!-- RIGHT PAGE: LETTERS & CHALLENGES -->
+  <div class="journal-page right">
+
+    <!-- Letter and creative exchange -->
+    <!-- Stamp and bow decorations -->
+
+  </div>
 </div>
 
 <img
