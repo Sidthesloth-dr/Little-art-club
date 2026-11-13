@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Journal | The Little Art Club</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #b79a75;
+      background-image: url("images/wood-desk.jpg");
+      background-size: cover;
+      background-attachment: fixed;
+      font-family: 'DM Sans', sans-serif;
+      color: #332925;
+    }
+
+    header {
+      background: rgba(32, 43, 40, .9);
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .logo {
+      font: 34px 'Caveat', cursive;
+    }
+
+    .home-link {
+      font-size: 13px;
+    }
+
+    .journal {
+      width: min(94%, 1100px);
+      margin: 55px auto;
+      padding: 55px;
+      background: #f5eedf;
+      box-shadow: 10px 15px 35px #33292545;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #825956;
+      text-align: center;
+    }
+
+    h1 {
+      font: 58px 'Playfair Display', serif;
+      text-align: center;
+      margin: 20px 0 8px;
+    }
+
+    .subtitle {
+      font: 30px 'Caveat', cursive;
+      color: #825956;
+      text-align: center;
+      margin-bottom: 45px;
+    }
+
+    .welcome {
+      border-top: 1px solid #d3c2a7;
+      border-bottom: 1px solid #d3c2a7;
+      padding: 20px 0;
+      margin-bottom: 35px;
+    }
+
+    .welcome h2 {
+      font: 30px 'Caveat', cursive;
+      margin: 0;
+    }
+
+    .welcome p {
+      font-size: 13px;
+      color: #75645c;
+      overflow-wrap: anywhere;
+    }
+
+    .journal-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+
+    .journal-card {
+      padding: 30px;
+      background: #fffbf3;
+      border: 1px solid #dfcfb7;
+      min-height: 190px;
+    }
+
+    .journal-card h3 {
+      font: 32px 'Caveat', cursive;
+      color: #825956;
+      margin: 0 0 12px;
+    }
+
+    .journal-card p {
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .journal-card button {
+      border: 0;
+      background: #825956;
+      color: #fff;
+      padding: 12px 20px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .account {
+      margin-top: 40px;
+      padding-top: 25px;
+      border-top: 1px solid #d3c2a7;
+      text-align: center;
+    }
+
+    .account button {
+      background: transparent;
+      color: #825956;
+      border: 1px solid #825956;
+      padding: 12px 25px;
+      cursor: pointer;
+    }
+
+    #status {
+      text-align: center;
+      margin: 25px 0;
+    }
+
+    [hidden] { display: none !important; }
+
+    @media (max-width: 650px) {
+      .journal { padding: 28px 20px; }
+      .journal-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 44px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="logo">the little art club</a>
+    <a href="index.html" class="home-link">← Back to the Club</a>
+  </header>
+
+  <main class="journal">
+    <p class="eyebrow">THE LITTLE ART CLUB</p>
+    <h1>My Journal</h1>
+    <p class="subtitle">a little collection of everything you create ♡</p>
+
+    <p id="status" role="status">Opening your journal...</p>
+
+    <div id="private-content" hidden>
+      <section class="welcome">
+        <h2>Welcome back, artist ♡</h2>
+        <p id="member-email"></p>
+      </section>
+
+      <div class="journal-grid">
+        <section class="journal-card">
+          <h3>🎨 Create Something</h3>
+          <p>Share a painting, sketch, photograph, or anything you've made.</p>
+          <button type="button" disabled>Post Artwork — Coming Soon</button>
+        </section>
+
+        <section class="journal-card">
+          <h3>🖼 My Gallery</h3>
+          <p>Revisit your creations and manage the artwork you've shared.</p>
+          <button type="button" disabled>My Artwork — Coming Soon</button>
+        </section>
+
+        <section class="journal-card">
+          <h3>💌 My Letters</h3>
+          <p>Read your letters, revisit sent notes, and write to friends.</p>
+          <button type="button" disabled>My Mailbox — Coming Soon</button>
+        </section>
+
+        <section class="journal-card">
+          <h3>🌷 My Profile</h3>
+          <p>Make your creative corner feel like your own.</p>
+          <button type="button" disabled>Customize — Coming Soon</button>
+        </section>
+      </div>
+
+      <section class="account">
+        <p>Signed in as <span id="account-email"></span></p>
+        <button id="sign-out" type="button">Sign Out</button>
+      </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <script>
+    const client = window.artClubSupabase;
+    const status = document.getElementById("status");
+    const privateContent =
+      document.getElementById("private-content");
+
+    async function openJournal() {
+      if (!client) {
+        status.textContent = "Could not connect to Supabase.";
+        return;
+      }
+
+      const { data, error } = await client.auth.getUser();
+
+      if (error || !data.user) {
+        window.location.replace("account.html");
+        return;
+      }
+
+      document.getElementById("member-email").textContent =
+        data.user.email || "";
+
+      document.getElementById("account-email").textContent =
+        data.user.email || "";
+
+      privateContent.hidden = false;
+      status.hidden = true;
+    }
+
+    document.getElementById("sign-out")
+      .addEventListener("click", async () => {
+        const { error } = await client.auth.signOut();
+
+        if (error) {
+          status.hidden = false;
+          status.textContent = error.message;
+          return;
+        }
+
+        window.location.replace("account.html");
+      });
+
+    openJournal();
+  </script>
+</body>
+</html>
