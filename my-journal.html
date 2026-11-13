@@ -284,6 +284,59 @@
   }
 }
 
+/* LETTER WRITING FORM */
+
+#letter-form {
+  margin-top: 20px;
+  padding: 22px;
+  background: #fffaf0;
+  border: 1px solid #d9c5ad;
+  box-shadow: 2px 3px 10px #6c50401a;
+  text-align: left;
+}
+
+#letter-form label {
+  display: block;
+  margin: 16px 0 7px;
+  font-size: 13px;
+  color: #785e58;
+  font-weight: 600;
+}
+
+#letter-form input,
+#letter-form select,
+#letter-form textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px;
+  border: 1px solid #d6c4b5;
+  border-radius: 3px;
+  background: #fffefa;
+  color: #423a35;
+  font: inherit;
+}
+
+#letter-form textarea {
+  resize: vertical;
+  line-height: 1.7;
+}
+
+#letter-form button {
+  margin-top: 20px;
+}
+
+#letter-message {
+  margin-top: 12px;
+  color: #825956;
+  font-size: 13px;
+}
+
+#letter-form [hidden],
+#letter-recipient-wrap[hidden] {
+  display: none !important;
+}
+
   </style>
 </head>
 
@@ -369,11 +422,58 @@
 </section>
 
 
-        <section class="journal-card">
-          <h3>💌 My Letters</h3>
-          <p>Read your letters, revisit sent notes, and write to friends.</p>
-          <button type="button" disabled>My Mailbox — Coming Soon</button>
-        </section>
+        
+<section class="journal-card">
+  <h3>💌 My Letters</h3>
+  <p>Little notes, thoughtful words, and letters to friends.</p>
+
+  <button type="button" id="open-letter-form">
+    + Write a Letter
+  </button>
+
+  <form id="letter-form" hidden>
+    <label for="letter-audience">
+      Who is this letter for?
+    </label>
+
+    <select id="letter-audience" required>
+      <option value="public">Everyone ♡ (Public)</option>
+      <option value="private">A Friend 💌 (Private)</option>
+    </select>
+
+    <div id="letter-recipient-wrap" hidden>
+      <label for="letter-recipient">Choose a friend</label>
+      <select id="letter-recipient">
+        <option value="">Select a friend...</option>
+      </select>
+    </div>
+
+    <label for="letter-title">Letter title *</label>
+    <input
+      id="letter-title"
+      type="text"
+      maxlength="120"
+      placeholder="A little note from me..."
+      required
+    >
+
+    <label for="letter-body">Your letter *</label>
+    <textarea
+      id="letter-body"
+      rows="7"
+      maxlength="10000"
+      placeholder="Dear friends..."
+      required
+    ></textarea>
+
+    <button type="submit" id="send-letter">
+      Send My Letter ♡
+    </button>
+  </form>
+
+  <p id="letter-message" role="status"></p>
+</section>
+
 
         <section class="journal-card">
           <h3>🌷 My Profile</h3>
@@ -732,6 +832,157 @@ await loadMyGallery();
     artworkGrid.appendChild(card);
   }
 }
+
+/* LITTLE ART CLUB — LETTER WRITING */
+
+const letterForm = document.getElementById("letter-form");
+const letterAudience = document.getElementById("letter-audience");
+const letterRecipientWrap =
+  document.getElementById("letter-recipient-wrap");
+const letterRecipient =
+  document.getElementById("letter-recipient");
+const letterMessage =
+  document.getElementById("letter-message");
+const sendLetterButton =
+  document.getElementById("send-letter");
+
+document.getElementById("open-letter-form")
+  .addEventListener("click", async () => {
+    letterForm.hidden = !letterForm.hidden;
+    letterMessage.textContent = "";
+
+    if (!letterForm.hidden &&
+        letterAudience.value === "private") {
+      await loadLetterRecipients();
+    }
+  });
+
+letterAudience.addEventListener("change", async () => {
+  const isPrivate = letterAudience.value === "private";
+
+  letterRecipientWrap.hidden = !isPrivate;
+  letterRecipient.required = isPrivate;
+
+  if (isPrivate) {
+    await loadLetterRecipients();
+  } else {
+    letterRecipient.value = "";
+  }
+});
+
+async function loadLetterRecipients() {
+  letterRecipient.replaceChildren();
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Select a friend...";
+  letterRecipient.appendChild(placeholder);
+
+  const { data: authData, error: authError } =
+    await client.auth.getUser();
+
+  if (authError || !authData.user) {
+    letterMessage.textContent =
+      "Please sign in to send a private letter.";
+    return;
+  }
+
+  const { data: members, error } =
+    await client.rpc("list_club_member_ids");
+
+  if (error) {
+    letterMessage.textContent =
+      "Could not load friends: " + error.message;
+    return;
+  }
+
+  const friends = (members || []).filter(
+    member => member.user_id !== authData.user.id
+  );
+
+  if (friends.length === 0) {
+    letterMessage.textContent =
+      "No other club members are available yet. " +
+      "Invite a friend and approve their membership first.";
+    return;
+  }
+
+  friends.forEach((member, index) => {
+    const option = document.createElement("option");
+    option.value = member.user_id;
+    option.textContent = `Club Friend ${index + 1}`;
+    letterRecipient.appendChild(option);
+  });
+
+  letterMessage.textContent = "";
+}
+
+letterForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  sendLetterButton.disabled = true;
+  sendLetterButton.textContent = "Sending your letter...";
+  letterMessage.textContent = "";
+
+  try {
+    const { data: authData, error: authError } =
+      await client.auth.getUser();
+
+    if (authError || !authData.user) {
+      throw new Error("Please sign in to send a letter.");
+    }
+
+    const audience = letterAudience.value;
+    const title =
+      document.getElementById("letter-title").value.trim();
+    const body =
+      document.getElementById("letter-body").value.trim();
+
+    if (!title || !body) {
+      throw new Error("Please write a title and a message.");
+    }
+
+    if (audience !== "public" && audience !== "private") {
+      throw new Error("Please choose a valid letter type.");
+    }
+
+    const recipientId =
+      audience === "private" ? letterRecipient.value : null;
+
+    if (audience === "private" && !recipientId) {
+      throw new Error("Please choose a friend.");
+    }
+
+    const { error } = await client
+      .from("letters")
+      .insert({
+        sender_id: authData.user.id,
+        recipient_id: recipientId,
+        audience,
+        title,
+        body
+      });
+
+    if (error) throw error;
+
+    letterMessage.textContent =
+      audience === "public"
+        ? "Your letter has been shared with the club! ♡"
+        : "Your private letter has been sent! 💌";
+
+    letterForm.reset();
+    letterForm.hidden = true;
+    letterRecipientWrap.hidden = true;
+    letterRecipient.required = false;
+
+  } catch (error) {
+    letterMessage.textContent =
+      "Could not send letter: " + error.message;
+  } finally {
+    sendLetterButton.disabled = false;
+    sendLetterButton.textContent = "Send My Letter ♡";
+  }
+});
 
     openJournal();
   </script>
