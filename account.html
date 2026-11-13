@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Members | The Little Art Club</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #b79a75;
+      background-image: url("images/wooden-desk.jpg");
+      background-size: cover;
+      background-position: center;
+      font-family: 'DM Sans', sans-serif;
+      color: #332925;
+    }
+
+    header {
+      padding: 22px 6%;
+      background: rgba(32, 43, 40, .88);
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font: 32px 'Caveat', cursive;
+    }
+
+    .membership-card {
+      position: relative;
+      width: min(90%, 560px);
+      margin: 75px auto;
+      padding: 55px 45px;
+      background: #f5eedf;
+      box-shadow: 8px 12px 35px #33292540;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #825956;
+    }
+
+    h1 {
+      font: 48px 'Playfair Display', serif;
+      margin: 18px 0;
+    }
+
+    .handwritten {
+      font: 27px 'Caveat', cursive;
+      color: #825956;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      margin: 20px 0 8px;
+      font-size: 13px;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #c2a77e;
+      background: #fffbf3;
+      font: inherit;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 14px 30px;
+      border: none;
+      background: #825956;
+      color: white;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:disabled { opacity: .6; cursor: wait; }
+
+    #message {
+      margin-top: 20px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="index.html">the little art club</a>
+  </header>
+
+  <main class="membership-card">
+    <div class="eyebrow">THE LITTLE ART CLUB</div>
+    <h1>Members' Corner</h1>
+    <p class="handwritten">a little space just for us ♡</p>
+
+    <section id="loading">
+      <p>Checking your invitation...</p>
+    </section>
+
+    <form id="password-form" hidden>
+      <p>Welcome to the club! Choose your password.</p>
+
+      <label for="new-password">Create password</label>
+      <input id="new-password" type="password"
+             minlength="12" autocomplete="new-password" required>
+
+      <button type="submit">Join the Art Club</button>
+    </form>
+
+    <form id="login-form" hidden>
+      <label for="email">Email address</label>
+      <input id="email" type="email" autocomplete="email" required>
+
+      <label for="password">Password</label>
+      <input id="password" type="password"
+             autocomplete="current-password" required>
+
+      <button type="submit">Sign In</button>
+    </form>
+
+    <section id="member-area" hidden>
+      <p class="handwritten">You're part of the club!</p>
+      <p id="member-email"></p>
+      <button id="sign-out" type="button">Sign Out</button>
+    </section>
+
+    <p id="message" role="status" aria-live="polite"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+
+  <script>
+    const client = window.artClubSupabase;
+
+    const loading = document.getElementById("loading");
+    const passwordForm = document.getElementById("password-form");
+    const loginForm = document.getElementById("login-form");
+    const memberArea = document.getElementById("member-area");
+    const message = document.getElementById("message");
+
+    function show(section) {
+      [loading, passwordForm, loginForm, memberArea]
+        .forEach(el => el.hidden = true);
+      section.hidden = false;
+    }
+
+    async function initialize() {
+      if (!client) {
+        message.textContent = "Supabase connection is missing.";
+        show(loginForm);
+        return;
+      }
+
+      const params = new URLSearchParams(window.location.hash.slice(1));
+      const query = new URLSearchParams(window.location.search);
+      const inviteFlow = params.get("type") === "invite"
+        || params.get("type") === "recovery"
+        || query.get("type") === "invite";
+
+      // Supabase detects invitation tokens in the URL.
+      const { data, error } = await client.auth.getSession();
+
+      if (error) {
+        message.textContent = error.message;
+        show(loginForm);
+        return;
+      }
+
+      if (data.session && inviteFlow) {
+        show(passwordForm);
+      } else if (data.session) {
+        document.getElementById("member-email").textContent =
+          data.session.user.email || "";
+        show(memberArea);
+      } else {
+        show(loginForm);
+        if (window.location.hash.includes("error=")) {
+          message.textContent =
+            "This invitation may have expired. Please request a new one.";
+        }
+      }
+    }
+
+    passwordForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      message.textContent = "";
+
+      const password =
+        document.getElementById("new-password").value;
+
+      const button = passwordForm.querySelector("button");
+      button.disabled = true;
+
+      const { error } = await client.auth.updateUser({ password });
+      button.disabled = false;
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      history.replaceState(null, "", location.pathname);
+      message.textContent = "Your password is saved. Welcome!";
+      const { data } = await client.auth.getUser();
+      document.getElementById("member-email").textContent =
+        data.user?.email || "";
+      show(memberArea);
+    });
+
+    loginForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      message.textContent = "";
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const button = loginForm.querySelector("button");
+      button.disabled = true;
+
+      const { data, error } =
+        await client.auth.signInWithPassword({ email, password });
+
+      button.disabled = false;
+
+      if (error) {
+        message.textContent = error.message;
+        return;
+      }
+
+      document.getElementById("member-email").textContent =
+        data.user?.email || email;
+      show(memberArea);
+    });
+
+    document.getElementById("sign-out")
+      .addEventListener("click", async () => {
+        const { error } = await client.auth.signOut();
+        if (error) {
+          message.textContent = error.message;
+          return;
+        }
+        message.textContent = "You've signed out.";
+        show(loginForm);
+      });
+
+    initialize();
+  </script>
+</body>
+</html>
