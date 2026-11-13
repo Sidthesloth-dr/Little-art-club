@@ -125,6 +125,10 @@
     0 10px 0 #8f7159,
     0 24px 45px #38231875;
   isolation: isolate;
+<!-- Twine across the bottom of the open journal -->
+<img class="scrapbook-decoration scrapbook-twine"
+     src="images/decorations/twine-horizontal.png"
+     alt="" aria-hidden="true">
 }
 
 .journal::after {
@@ -420,6 +424,98 @@
   pointer-events: none;
 }
 
+/* LITTLE ART CLUB — SCRAPBOOK DECORATIONS */
+
+.journal {
+  position: relative;
+  overflow: visible;
+}
+
+.journal-page {
+  position: relative;
+}
+
+/* Decorative images stay out of the way */
+.scrapbook-decoration {
+  position: absolute;
+  display: block;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 5;
+}
+
+/* Left page: pink pressed flower */
+.scrapbook-pink-flower {
+  width: 85px;
+  top: 17%;
+  left: -36px;
+  transform: rotate(-18deg);
+}
+
+/* Left page: vintage sailboat stamp */
+.scrapbook-sailboat {
+  width: 76px;
+  bottom: 9%;
+  right: 8px;
+  transform: rotate(12deg);
+}
+
+/* Right page: botanical sprig */
+.scrapbook-fern {
+  width: 125px;
+  top: 32%;
+  right: -45px;
+  transform: rotate(18deg);
+}
+
+/* Right page: baby breath flowers */
+.scrapbook-baby-breath {
+  width: 105px;
+  bottom: 10%;
+  right: -20px;
+  transform: rotate(-8deg);
+}
+
+/* Twine stretched along the journal bottom */
+.scrapbook-twine {
+  width: 92%;
+  height: 40px;
+  object-fit: fill;
+  bottom: 4px;
+  left: 4%;
+  z-index: 6;
+}
+
+/* Small pink gingham tape */
+.scrapbook-pink-tape {
+  width: 110px;
+  top: 6px;
+  right: 12%;
+  transform: rotate(10deg);
+}
+
+/* Keep decorations smaller on phones */
+@media (max-width: 850px) {
+  .scrapbook-pink-flower {
+    width: 55px;
+    left: -12px;
+  }
+  .scrapbook-sailboat {
+    width: 55px;
+  }
+  .scrapbook-fern {
+    width: 75px;
+    right: -10px;
+  }
+  .scrapbook-baby-breath {
+    width: 65px;
+    right: -5px;
+  }
+  .scrapbook-twine {
+    height: 25px;
+  }
+}
 </style>
 </head>
   <body>
@@ -466,6 +562,14 @@
   <div class="journal">
     <!-- LEFT PAGE: FEATURED ARTWORK -->
     <div class="journal-page left">
+    <!-- Left-page scrapbook decorations -->
+    <img class="scrapbook-decoration scrapbook-pink-flower"
+         src="images/decorations/pink-pressed-flower.png"
+         alt="" aria-hidden="true">
+     <img class="scrapbook-decoration scrapbook-sailboat"
+         src="images/decorations/sailboat-stamp.png"
+         alt="" aria-hidden="true">
+
       <span class="journal-label">01 / ARTWORK</span>
       <div class="journal-photo">
         <img id="featured-artwork-image" src="images/water-background.jpg" alt="Sunlight on rocks beneath water">
@@ -480,6 +584,17 @@
 
     <!-- RIGHT PAGE: LETTERS & CREATIVE EXCHANGE -->
     <div class="journal-page right">
+      
+    <!-- Right-page scrapbook decorations -->
+    <img class="scrapbook-decoration scrapbook-fern"
+         src="images/decorations/fern-frond.png"
+         alt="" aria-hidden="true">
+    <img class="scrapbook-decoration scrapbook-baby-breath"
+         src="images/decorations/taped-baby-breath.png"
+         alt="" aria-hidden="true">
+    <img class="scrapbook-decoration scrapbook-pink-tape"
+         src="images/decorations/pink-gingham-tape.png"
+         alt="" aria-hidden="true">
       <span class="journal-label">02 / LETTERS</span>
       <div class="letter">
         <h3>Dear friends,</h3>
